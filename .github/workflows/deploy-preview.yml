@@ -41,6 +41,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client
+          psql "$DATABASE_URL" -c 'DROP SCHEMA IF EXISTS drizzle CASCADE;'
           psql "$DATABASE_URL" -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'
           psql "$DATABASE_URL" -c 'DROP ROLE IF EXISTS "anon"; DROP ROLE IF EXISTS "authenticated";'
 
