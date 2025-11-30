@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1764448584470,
+      "tag": "0000_useful_morlun",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764451717839,
+      "tag": "0001_modern_johnny_storm",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764451976114,
+      "tag": "0002_lonely_edwin_jarvis",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764452569511,
+      "tag": "0003_organic_dexter_bennett",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1764452946900,
+      "tag": "0004_uid-function",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764453095357,
+      "tag": "0005_fresh_hobgoblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1764453588759,
+      "tag": "0006_grant-anon-authenticated",
+      "breakpoints": true
+    }
+  ]
+}
