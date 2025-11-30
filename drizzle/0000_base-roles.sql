@@ -1,3 +1,4 @@
+CREATE ROLE "anon";--> statement-breakpoint
 CREATE ROLE "authenticated";--> statement-breakpoint
 GRANT ALL ON SCHEMA public TO "anon";--> statement-breakpoint
 GRANT ALL ON SCHEMA public TO "authenticated";--> statement-breakpoint
