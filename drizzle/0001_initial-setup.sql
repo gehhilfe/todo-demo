@@ -1,5 +1,3 @@
-CREATE ROLE "anon";--> statement-breakpoint
-CREATE ROLE "authenticated";--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -57,10 +55,5 @@ ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("
 CREATE INDEX "account_userId_idx" ON "account" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "session_userId_idx" ON "session" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "verification_identifier_idx" ON "verification" USING btree ("identifier");--> statement-breakpoint
-CREATE OR REPLACE FUNCTION current_user_id() RETURNS text AS $$
-BEGIN
-    RETURN current_setting('app.request.user_id', true);
-END;
-$$ LANGUAGE plpgsql;--> statement-breakpoint
 CREATE POLICY "Allow all to postgres" ON "user" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
 CREATE POLICY "Allow authenticated to read user" ON "user" AS PERMISSIVE FOR SELECT TO "authenticated" USING (id = current_user_id());

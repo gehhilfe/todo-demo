@@ -5,8 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1764503003648,
-      "tag": "0000_chilly_cassandra_nova",
+      "when": 1764504412129,
+      "tag": "0000_base-roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764504446048,
+      "tag": "0001_initial-setup",
       "breakpoints": true
     }
   ]
