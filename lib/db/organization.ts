@@ -49,8 +49,8 @@ export const role = pgTable("role", {
 ]).enableRLS();
 
 export const rolePermission = pgTable("role_permission", {
-    roleId: text("role_id").references(() => role.id),
-    permissionSlug: text("permission_slug").references(() => permission.slug),
+    roleId: text("role_id").notNull().references(() => role.id),
+    permissionSlug: text("permission_slug").notNull().references(() => permission.slug),
 }, (t) => [
     primaryKey({ columns: [t.roleId, t.permissionSlug] }),
     pgPolicy("Allow all to postgres", {
@@ -61,10 +61,11 @@ export const rolePermission = pgTable("role_permission", {
 ]).enableRLS();
 
 export const userRole = pgTable("user_role", {
-    userId: text("user_id").references(() => user.id),
-    roleId: text("role_id").references(() => role.id),
+    userId: text("user_id").notNull().references(() => user.id),
+    roleId: text("role_id").notNull().references(() => role.id),
+    organizationId: text("organization_id").notNull().references(() => organization.id),
 }, (t) => [
-    primaryKey({ columns: [t.userId, t.roleId] }),
+    primaryKey({ columns: [t.userId, t.roleId, t.organizationId] }),
     pgPolicy("Allow all to postgres", {
         for: "all",
         to: postgresRole,

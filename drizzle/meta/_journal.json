@@ -15,6 +15,13 @@
       "when": 1764504446048,
       "tag": "0001_initial-setup",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764520775600,
+      "tag": "0002_add-rbac",
+      "breakpoints": true
     }
   ]
 }
