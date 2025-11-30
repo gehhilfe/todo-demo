@@ -3,8 +3,8 @@ import { pgTable, text, timestamp, boolean, index, pgRole, pgPolicy } from "driz
 
 
 export const postgresRole = pgRole('postgres').existing();
-export const authenticatedRole = pgRole("authenticated").existing();
-export const anonRole = pgRole("anon").existing();
+export const authenticatedRole = pgRole("authenticated");
+export const anonRole = pgRole("anon");
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
