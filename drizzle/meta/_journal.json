@@ -22,6 +22,13 @@
       "when": 1764520775600,
       "tag": "0002_add-rbac",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764520802045,
+      "tag": "0003_func-has-permission",
+      "breakpoints": true
     }
   ]
 }
