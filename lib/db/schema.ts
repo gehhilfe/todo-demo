@@ -106,3 +106,7 @@ export const accountRelations = relations(account, ({ one }) => ({
         references: [user.id],
     }),
 }));
+
+// Export organization-related tables
+export * from "./organization";
+
