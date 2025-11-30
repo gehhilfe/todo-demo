@@ -61,13 +61,13 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\", \"branch\": \"$BRANCH\"}"
 
-      - name: Start Preview App
+      - name: Deploy Preview App
         env:
           DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
           DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
           APP_ID: ${{ secrets.DOKPLOY_APP_ID }}
         run: |
-          curl -X POST "$DOKPLOY_URL/api/application.start" \
+          curl -X POST "$DOKPLOY_URL/api/application.deploy" \
             -H "x-api-key: $DOKPLOY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\"}"
