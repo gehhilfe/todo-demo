@@ -16,6 +16,11 @@ export const organization = pgTable("organization", {
         to: postgresRole,
         withCheck: sql`true`,
     }),
+    pgPolicy("Allow user to read with organization.view permission", {
+        for: "select",
+        to: authenticatedRole,
+        using: sql`has_permission(id, 'organization.view')`,
+    }),
 ]).enableRLS();
 
 export const permission = pgTable("permission", {
@@ -27,6 +32,11 @@ export const permission = pgTable("permission", {
         for: "all",
         to: postgresRole,
         withCheck: sql`true`,
+    }),
+    pgPolicy("Allow authenticated to read permissions", {
+        for: "select",
+        to: authenticatedRole,
+        using: sql`true`,
     }),
 ]).enableRLS();
 
@@ -46,6 +56,11 @@ export const role = pgTable("role", {
         to: authenticatedRole,
         using: sql`organization_id IS NULL`,
     }),
+    pgPolicy("Allow user to read with organization.view permission", {
+        for: "select",
+        to: authenticatedRole,
+        using: sql`has_permission(organization_id, 'organization.view')`,
+    }),
 ]).enableRLS();
 
 export const rolePermission = pgTable("role_permission", {
@@ -57,6 +72,11 @@ export const rolePermission = pgTable("role_permission", {
         for: "all",
         to: postgresRole,
         withCheck: sql`true`,
+    }),
+    pgPolicy("Allow user to read role permissions for their assigned roles", {
+        for: "select",
+        to: authenticatedRole,
+        using: sql`role_id IN (SELECT role_id FROM user_role WHERE user_id = current_user_id())`,
     }),
 ]).enableRLS();
 
@@ -70,5 +90,10 @@ export const userRole = pgTable("user_role", {
         for: "all",
         to: postgresRole,
         withCheck: sql`true`,
+    }),
+    pgPolicy("Allow users to read their own roles", {
+        for: "select",
+        to: authenticatedRole,
+        using: sql`user_id = current_user_id()`,
     }),
 ]).enableRLS();

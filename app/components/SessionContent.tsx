@@ -2,7 +2,8 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { createRlsDrizzle } from "@/lib/db";
-import { user } from "@/lib/db/schema";
+import { organization, permission, role, rolePermission, user, userRole } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function SessionContent() {
     const session = await auth.api.getSession({
@@ -15,9 +16,43 @@ export async function SessionContent() {
         return await tx.select().from(user);
     });
 
+    const organizations = await db.transaction(async (tx) => {
+        return await tx.select().from(organization);
+    });
+
+    const roles = await db.transaction(async (tx) => {
+        return await tx.select().from(role);
+    });
+
+    const myRoles = await db.transaction(async (tx) => {
+        if (!session?.user?.id) {
+            return [];
+        }
+        return await tx.select().from(userRole)
+            .where(eq(userRole.userId, session.user.id))
+            .innerJoin(role, eq(userRole.roleId, role.id));
+    });
+
+    const myPermissions = await db.transaction(async (tx) => {
+        if (!session?.user?.id) {
+            return [];
+        }
+        return await tx.selectDistinct({
+            slug: permission.slug,
+        }).from(userRole)
+            .where(eq(userRole.userId, session.user.id))
+            .innerJoin(role, eq(userRole.roleId, role.id))
+            .innerJoin(rolePermission, eq(role.id, rolePermission.roleId))
+            .innerJoin(permission, eq(rolePermission.permissionSlug, permission.slug));
+    });
+
     return (
         <>
             <pre>{JSON.stringify(users, null, 2)}</pre>
+            <pre>{JSON.stringify(organizations, null, 2)}</pre>
+            <pre>{JSON.stringify(roles, null, 2)}</pre>
+            <pre>{JSON.stringify(myRoles, null, 2)}</pre>
+            <pre>{JSON.stringify(myPermissions, null, 2)}</pre>
             <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
                 <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
                     {session?.user

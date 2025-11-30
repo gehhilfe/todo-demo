@@ -29,6 +29,27 @@
       "when": 1764520802045,
       "tag": "0003_func-has-permission",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1764521226109,
+      "tag": "0004_admin-role",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764523057997,
+      "tag": "0005_update-rbac-rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1764524932764,
+      "tag": "0006_update-rbac-rls-2",
+      "breakpoints": true
     }
   ]
 }
