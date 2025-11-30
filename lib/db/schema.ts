@@ -1,7 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, index, pgRole, pgPolicy } from "drizzle-orm/pg-core";
 
-
 export const postgresRole = pgRole('postgres').existing();
 export const authenticatedRole = pgRole("authenticated").existing();
 export const anonRole = pgRole("anon").existing();
