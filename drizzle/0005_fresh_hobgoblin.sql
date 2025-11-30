@@ -1,1 +1,0 @@
-ALTER POLICY "Allow authenticated to read user" ON "user" TO authenticated USING (id = current_user_id());

@@ -1,1 +1,0 @@
-CREATE POLICY "Allow all to postgres" ON "user" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);

@@ -1,1 +1,0 @@
-CREATE POLICY "Allow authenticated to read user" ON "user" AS PERMISSIVE FOR SELECT TO "authenticated" USING (id = current_setting('app.request.user_id', true));

@@ -31,7 +31,7 @@ jobs:
           APP_ID: ${{ secrets.DOKPLOY_APP_ID }}
         run: |
           curl -X POST "$DOKPLOY_URL/api/application.stop" \
-            -H "Authorization: Bearer $DOKPLOY_TOKEN" \
+            -H "x-api-key: $DOKPLOY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\"}"
 
@@ -42,6 +42,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
           psql "$DATABASE_URL" -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'
+          psql "$DATABASE_URL" -c 'DROP ROLE IF EXISTS "anon"; DROP ROLE IF EXISTS "authenticated";'
 
       - name: Run Migrations
         run: pnpm db:migrate
@@ -56,7 +57,7 @@ jobs:
           BRANCH: ${{ github.ref_name }}
         run: |
           curl -X POST "$DOKPLOY_URL/api/application.update" \
-            -H "Authorization: Bearer $DOKPLOY_TOKEN" \
+            -H "x-api-key: $DOKPLOY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\", \"branch\": \"$BRANCH\"}"
 
@@ -67,6 +68,6 @@ jobs:
           APP_ID: ${{ secrets.DOKPLOY_APP_ID }}
         run: |
           curl -X POST "$DOKPLOY_URL/api/application.start" \
-            -H "Authorization: Bearer $DOKPLOY_TOKEN" \
+            -H "x-api-key: $DOKPLOY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\"}"

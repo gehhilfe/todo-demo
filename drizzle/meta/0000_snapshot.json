@@ -1,5 +1,5 @@
 {
-  "id": "9ac693a7-965b-4c20-880c-b9e9271c8cc5",
+  "id": "4e2d69f0-99c4-4aa1-a10e-30c219af9c34",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -124,7 +124,7 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     },
     "public.session": {
       "name": "session",
@@ -224,7 +224,7 @@
       },
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     },
     "public.user": {
       "name": "user",
@@ -288,9 +288,28 @@
           ]
         }
       },
-      "policies": {},
+      "policies": {
+        "Allow all to postgres": {
+          "name": "Allow all to postgres",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "postgres"
+          ],
+          "withCheck": "true"
+        },
+        "Allow authenticated to read user": {
+          "name": "Allow authenticated to read user",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "id = current_user_id()"
+        }
+      },
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     },
     "public.verification": {
       "name": "verification",
@@ -357,13 +376,26 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     }
   },
   "enums": {},
   "schemas": {},
   "sequences": {},
-  "roles": {},
+  "roles": {
+    "anon": {
+      "name": "anon",
+      "createDb": false,
+      "createRole": false,
+      "inherit": true
+    },
+    "authenticated": {
+      "name": "authenticated",
+      "createDb": false,
+      "createRole": false,
+      "inherit": true
+    }
+  },
   "policies": {},
   "views": {},
   "_meta": {
