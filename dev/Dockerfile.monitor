@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir psycopg2-binary docker
+
+WORKDIR /app
+
+COPY monitor-postgrest.py /app/
+
+CMD ["python", "/app/monitor-postgrest.py"]
+

@@ -7,7 +7,7 @@ BEGIN
         SELECT 1
         FROM user_role ur
         JOIN role_permission rp ON ur.role_id = rp.role_id
-        WHERE ur.user_id = current_user_id()
+        WHERE ur.user_id = auth.uid()
           AND ur.organization_id = has_permission.organization_id
           AND rp.permission_slug = has_permission.permission_slug
     );

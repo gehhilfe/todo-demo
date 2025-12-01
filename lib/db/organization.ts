@@ -76,7 +76,7 @@ export const rolePermission = pgTable("role_permission", {
     pgPolicy("Allow user to read role permissions for their assigned roles", {
         for: "select",
         to: authenticatedRole,
-        using: sql`role_id IN (SELECT role_id FROM user_role WHERE user_id = current_user_id())`,
+        using: sql`role_id IN (SELECT role_id FROM user_role WHERE user_id = auth.uid())`,
     }),
 ]).enableRLS();
 
@@ -94,6 +94,6 @@ export const userRole = pgTable("user_role", {
     pgPolicy("Allow users to read their own roles", {
         for: "select",
         to: authenticatedRole,
-        using: sql`user_id = current_user_id()`,
+        using: sql`user_id = auth.uid()`,
     }),
 ]).enableRLS();

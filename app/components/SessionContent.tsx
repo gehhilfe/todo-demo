@@ -13,7 +13,9 @@ export async function SessionContent() {
     const db = createRlsDrizzle({ session });
 
     const users = await db.transaction(async (tx) => {
-        return await tx.select().from(user);
+        if (session)
+            return await tx.select().from(user);
+        return [];
     });
 
     const organizations = await db.transaction(async (tx) => {

@@ -1,0 +1,1 @@
+CREATE POLICY "Allow authenticator to read jwks" ON "auth"."jwks" AS PERMISSIVE FOR SELECT TO "authenticator" USING (true);

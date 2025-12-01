@@ -1,6 +1,6 @@
 # Development environment commands
 
-# Start the development environment (database + migrations)
+# Start the development environment (database)
 dev:
     @just db-start
     @just db-migrate
@@ -24,9 +24,11 @@ db-wait:
 db-stop:
     @docker compose -f dev/docker-compose.yaml down
 
-# Run database migrations
+# Run database migrations using Drizzle
 db-migrate:
+    @echo "Running database migrations..."
     @pnpm db:migrate
+    @echo "Migrations complete!"
 
 # Seed the database
 db-seed:

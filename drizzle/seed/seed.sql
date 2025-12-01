@@ -1,4 +1,4 @@
-INSERT INTO "user" (id, name, email, email_verified, image, created_at, updated_at)
+INSERT INTO "auth"."user" (id, name, email, email_verified, image, created_at, updated_at)
 VALUES (
     'ZL3XWeKfZp3rlxVzykWGQphAwBdMaxNx',
     'Test User',
@@ -9,7 +9,7 @@ VALUES (
     '2025-11-30 17:03:31.999'
 ) ON CONFLICT(id) DO NOTHING;
 
-INSERT INTO "user" (id, name, email, email_verified, image, created_at, updated_at)
+INSERT INTO "auth"."user" (id, name, email, email_verified, image, created_at, updated_at)
 VALUES (
     'fGM8iJ8P6NeKFDuboM8FLjKjma2arqC0',
     'Test Admin',
@@ -20,7 +20,7 @@ VALUES (
     '2025-11-30 17:03:31.999'
 ) ON CONFLICT(id) DO NOTHING;
 
-INSERT INTO "account" (id, account_id, provider_id, user_id, access_token, refresh_token, id_token, access_token_expires_at, refresh_token_expires_at, scope, password, created_at, updated_at)
+INSERT INTO "auth"."account" (id, account_id, provider_id, user_id, access_token, refresh_token, id_token, access_token_expires_at, refresh_token_expires_at, scope, password, created_at, updated_at)
 VALUES (
     '57wV8BrOaiH1bdBkx8p3ynaO1ZHZflUd',
     'ZL3XWeKfZp3rlxVzykWGQphAwBdMaxNx',
@@ -37,7 +37,7 @@ VALUES (
     '2025-11-30 17:03:32.016'
 ) ON CONFLICT(id) DO NOTHING;
 
-INSERT INTO "account" (id, account_id, provider_id, user_id, access_token, refresh_token, id_token, access_token_expires_at, refresh_token_expires_at, scope, password, created_at, updated_at)
+INSERT INTO "auth"."account" (id, account_id, provider_id, user_id, access_token, refresh_token, id_token, access_token_expires_at, refresh_token_expires_at, scope, password, created_at, updated_at)
 VALUES (
     'pWpzzwyocuuSpmMU587p4I9iLlkYuV4l',
     'fGM8iJ8P6NeKFDuboM8FLjKjma2arqC0',

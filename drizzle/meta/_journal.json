@@ -5,50 +5,78 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1764504412129,
-      "tag": "0000_base-roles",
+      "when": 1764603918147,
+      "tag": "0000_basic-roles",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1764504446048,
-      "tag": "0001_initial-setup",
+      "when": 1764604301000,
+      "tag": "0001_better-auth",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1764520775600,
-      "tag": "0002_add-rbac",
+      "when": 1764604309043,
+      "tag": "0002_func-uid",
       "breakpoints": true
     },
     {
       "idx": 3,
       "version": "7",
-      "when": 1764520802045,
-      "tag": "0003_func-has-permission",
+      "when": 1764604337300,
+      "tag": "0003_update-rls",
       "breakpoints": true
     },
     {
       "idx": 4,
       "version": "7",
-      "when": 1764521226109,
-      "tag": "0004_admin-role",
+      "when": 1764604385255,
+      "tag": "0004_rbac-and-org",
       "breakpoints": true
     },
     {
       "idx": 5,
       "version": "7",
-      "when": 1764523057997,
-      "tag": "0005_update-rbac-rls",
+      "when": 1764604402110,
+      "tag": "0005_func-has-permission",
       "breakpoints": true
     },
     {
       "idx": 6,
       "version": "7",
-      "when": 1764524932764,
-      "tag": "0006_update-rbac-rls-2",
+      "when": 1764604496607,
+      "tag": "0006_update-rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1764604615833,
+      "tag": "0007_grant-on-auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1764605047024,
+      "tag": "0008_postgrest-config",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1764605448498,
+      "tag": "0009_permissions-and-roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1764607832696,
+      "tag": "0010_allow-authenticator-to-read-jwks",
       "breakpoints": true
     }
   ]

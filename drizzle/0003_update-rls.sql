@@ -1,0 +1,1 @@
+CREATE POLICY "Allow authenticated to read user" ON "auth"."user" AS PERMISSIVE FOR SELECT TO "authenticated" USING (id = auth.uid());

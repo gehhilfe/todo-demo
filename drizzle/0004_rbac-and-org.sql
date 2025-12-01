@@ -39,12 +39,15 @@ ALTER TABLE "user_role" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 ALTER TABLE "role" ADD CONSTRAINT "role_organization_id_organization_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organization"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "role_permission" ADD CONSTRAINT "role_permission_role_id_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."role"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "role_permission" ADD CONSTRAINT "role_permission_permission_slug_permission_slug_fk" FOREIGN KEY ("permission_slug") REFERENCES "public"."permission"("slug") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "user_role" ADD CONSTRAINT "user_role_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_role" ADD CONSTRAINT "user_role_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_role" ADD CONSTRAINT "user_role_role_id_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."role"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_role" ADD CONSTRAINT "user_role_organization_id_organization_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organization"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 CREATE POLICY "Allow all to postgres" ON "organization" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
 CREATE POLICY "Allow all to postgres" ON "permission" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
+CREATE POLICY "Allow authenticated to read permissions" ON "permission" AS PERMISSIVE FOR SELECT TO "authenticated" USING (true);--> statement-breakpoint
 CREATE POLICY "Allow all to postgres" ON "role" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
 CREATE POLICY "Allow authenticated to read roles without organization id" ON "role" AS PERMISSIVE FOR SELECT TO "authenticated" USING (organization_id IS NULL);--> statement-breakpoint
 CREATE POLICY "Allow all to postgres" ON "role_permission" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
-CREATE POLICY "Allow all to postgres" ON "user_role" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);
+CREATE POLICY "Allow user to read role permissions for their assigned roles" ON "role_permission" AS PERMISSIVE FOR SELECT TO "authenticated" USING (role_id IN (SELECT role_id FROM user_role WHERE user_id = auth.uid()));--> statement-breakpoint
+CREATE POLICY "Allow all to postgres" ON "user_role" AS PERMISSIVE FOR ALL TO "postgres" WITH CHECK (true);--> statement-breakpoint
+CREATE POLICY "Allow users to read their own roles" ON "user_role" AS PERMISSIVE FOR SELECT TO "authenticated" USING (user_id = auth.uid());

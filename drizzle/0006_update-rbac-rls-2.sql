@@ -1,2 +1,0 @@
-CREATE POLICY "Allow authenticated to read permissions" ON "permission" AS PERMISSIVE FOR SELECT TO "authenticated" USING (true);--> statement-breakpoint
-CREATE POLICY "Allow user to read role permissions for their assigned roles" ON "role_permission" AS PERMISSIVE FOR SELECT TO "authenticated" USING (role_id IN (SELECT role_id FROM user_role WHERE user_id = current_user_id()));

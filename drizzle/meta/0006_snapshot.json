@@ -1,12 +1,12 @@
 {
-  "id": "233ec58a-2a50-403f-b21a-68758f776659",
-  "prevId": "f23a9798-3046-4f77-9d39-a3ba3a843831",
+  "id": "f1bf9067-8f97-4476-a5c7-8f766746feee",
+  "prevId": "2cf0c8e6-bb1c-404f-902a-6f4bf052caef",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
+    "auth.account": {
       "name": "account",
-      "schema": "",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -110,6 +110,7 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
+          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -126,9 +127,52 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "public.session": {
+    "auth.jwks": {
+      "name": "jwks",
+      "schema": "auth",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "public_key": {
+          "name": "public_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "private_key": {
+          "name": "private_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "auth.session": {
       "name": "session",
-      "schema": "",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -202,6 +246,7 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
+          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -226,9 +271,9 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "public.user": {
+    "auth.user": {
       "name": "user",
-      "schema": "",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -305,15 +350,15 @@
           "to": [
             "authenticated"
           ],
-          "using": "id = current_user_id()"
+          "using": "id = auth.uid()"
         }
       },
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "public.verification": {
+    "auth.verification": {
       "name": "verification",
-      "schema": "",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -638,7 +683,7 @@
           "to": [
             "authenticated"
           ],
-          "using": "role_id IN (SELECT role_id FROM user_role WHERE user_id = current_user_id())"
+          "using": "role_id IN (SELECT role_id FROM user_role WHERE user_id = auth.uid())"
         }
       },
       "checkConstraints": {},
@@ -673,6 +718,7 @@
           "name": "user_role_user_id_user_id_fk",
           "tableFrom": "user_role",
           "tableTo": "user",
+          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
@@ -737,7 +783,7 @@
           "to": [
             "authenticated"
           ],
-          "using": "user_id = current_user_id()"
+          "using": "user_id = auth.uid()"
         }
       },
       "checkConstraints": {},
@@ -745,7 +791,9 @@
     }
   },
   "enums": {},
-  "schemas": {},
+  "schemas": {
+    "auth": "auth"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

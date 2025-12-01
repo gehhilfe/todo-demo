@@ -1,0 +1,2 @@
+CREATE POLICY "Allow user to read with organization.view permission" ON "organization" AS PERMISSIVE FOR SELECT TO "authenticated" USING (has_permission(id, 'organization.view'));--> statement-breakpoint
+CREATE POLICY "Allow user to read with organization.view permission" ON "role" AS PERMISSIVE FOR SELECT TO "authenticated" USING (has_permission(organization_id, 'organization.view'));
