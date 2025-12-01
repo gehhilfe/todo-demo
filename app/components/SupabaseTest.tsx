@@ -13,7 +13,7 @@ async function testDb() {
     console.log(res.data);
     const postgrestUrl = process.env.NODE_ENV === 'development'
         ? "http://localhost:3010"
-        : "/pgrest/";
+        : `${window.location.origin}/pgrest`;
     const supabase = new PostgrestClient(postgrestUrl, {
         headers: {
             Authorization: `Bearer ${res.data.token}`,
