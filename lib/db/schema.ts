@@ -1,12 +1,14 @@
 import { relations, sql } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, pgRole, pgPolicy } from "drizzle-orm/pg-core";
-
+import { pgTable, text, timestamp, boolean, index, pgRole, pgPolicy, pgSchema } from "drizzle-orm/pg-core";
 
 export const postgresRole = pgRole('postgres').existing();
 export const authenticatedRole = pgRole("authenticated").existing();
+export const authenticatorRole = pgRole("authenticator").existing();
 export const anonRole = pgRole("anon").existing();
 
-export const user = pgTable("user", {
+export const authSchema = pgSchema("auth");
+
+export const user = authSchema.table("user", {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
     email: text("email").notNull().unique(),
@@ -26,11 +28,11 @@ export const user = pgTable("user", {
     pgPolicy("Allow authenticated to read user", {
         for: "select",
         to: authenticatedRole,
-        using: sql`id = current_user_id()`,
+        using: sql`id = auth.uid()`,
     }),
 ]).enableRLS();
 
-export const session = pgTable(
+export const session = authSchema.table(
     "session",
     {
         id: text("id").primaryKey(),
@@ -49,7 +51,7 @@ export const session = pgTable(
     (table) => [index("session_userId_idx").on(table.userId)],
 ).enableRLS();
 
-export const account = pgTable(
+export const account = authSchema.table(
     "account",
     {
         id: text("id").primaryKey(),
@@ -73,7 +75,7 @@ export const account = pgTable(
     (table) => [index("account_userId_idx").on(table.userId)],
 ).enableRLS();
 
-export const verification = pgTable(
+export const verification = authSchema.table(
     "verification",
     {
         id: text("id").primaryKey(),
@@ -88,6 +90,20 @@ export const verification = pgTable(
     },
     (table) => [index("verification_identifier_idx").on(table.identifier)],
 ).enableRLS();
+
+export const jwks = authSchema.table("jwks", {
+    id: text("id").primaryKey(),
+    publicKey: text("public_key").notNull(),
+    privateKey: text("private_key").notNull(),
+    createdAt: timestamp("created_at").notNull(),
+    expiresAt: timestamp("expires_at"),
+}, (table) => [
+    pgPolicy("Allow authenticator to read jwks", {
+        for: "select",
+        to: authenticatorRole,
+        using: sql`true`,
+    }),
+]).enableRLS();
 
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
@@ -107,3 +123,7 @@ export const accountRelations = relations(account, ({ one }) => ({
         references: [user.id],
     }),
 }));
+
+// Export organization-related tables
+export * from "./organization";
+

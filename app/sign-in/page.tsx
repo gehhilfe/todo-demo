@@ -36,6 +36,29 @@ export default function SignInPage() {
     }
   };
 
+  const handleQuickLogin = async (email: string, password: string) => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signIn.email({
+        email,
+        password,
+      });
+
+      if (result.error) {
+        setError(result.error.message || "Failed to sign in");
+      } else {
+        router.push("/");
+        router.refresh();
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
       <div className="w-full max-w-md rounded-lg border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -104,6 +127,31 @@ export default function SignInPage() {
             Sign up
           </Link>
         </p>
+        {process.env.NODE_ENV === "development" && (
+          <div className="mt-6 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+            <p className="mb-3 text-center text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              Development Quick Login
+            </p>
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin("user@test.com", "testtest")}
+                disabled={loading}
+                className="w-full rounded-md border border-zinc-300 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              >
+                Login as Test User
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin("admin@test.com", "testtest")}
+                disabled={loading}
+                className="w-full rounded-md border border-zinc-300 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              >
+                Login as Test Admin
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

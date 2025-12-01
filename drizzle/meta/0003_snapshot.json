@@ -1,6 +1,6 @@
 {
-  "id": "5c163c6e-4aaf-46d3-a38f-2493d6a23a47",
-  "prevId": "e8f69669-cc0f-4769-87ee-05552639f253",
+  "id": "57199c27-97e1-4477-a9f9-66e9e36f8c9a",
+  "prevId": "4f893ca5-753f-403f-92d3-7a425c5eb79f",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -342,6 +342,15 @@
             "postgres"
           ],
           "withCheck": "true"
+        },
+        "Allow authenticated to read user": {
+          "name": "Allow authenticated to read user",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "id = auth.uid()"
         }
       },
       "checkConstraints": {},

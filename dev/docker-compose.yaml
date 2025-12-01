@@ -8,6 +8,62 @@ services:
       - "5432:5432"
     volumes:
       - db:/data/postgres
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init-roles.sql
+    command: postgres -c log_statement=all -c log_destination=stderr
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  db-init:
+    image: postgres:latest
+    environment:
+      PGPASSWORD: password
+    volumes:
+      - ./init-db.sql:/init-db.sql
+    command: >
+      sh -c "
+        until pg_isready -h db -U postgres; do
+          echo 'Waiting for database to be ready...'
+          sleep 2
+        done
+        psql -h db -U postgres -f /init-db.sql
+      "
+    depends_on:
+      db:
+        condition: service_healthy
+  postgREST:
+    image: postgrest/postgrest:latest
+    environment:
+      PGRST_LOG_LEVEL: info
+      PGRST_DB_URI: postgres://authenticator:password@db:5432/postgres
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_DB_PRE_CONFIG: "postgrest.pre_config"
+    ports:
+      - "3010:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+  postgrest-monitor:
+    build:
+      context: ./
+      dockerfile: Dockerfile.monitor
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: password
+      POSTGREST_CONTAINER_NAME: ${COMPOSE_PROJECT_NAME:-dev}-postgREST-1
+      POLL_INTERVAL: "5"
+    depends_on:
+      - db
+      - postgREST
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
 volumes:
   db:

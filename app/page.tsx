@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { SessionInfo } from "./components/SessionInfo";
 import { SessionContent } from "./components/SessionContent";
+import { SupabaseTest } from "./components/SupabaseTest";
 
 export default function Home() {
   return (
@@ -28,6 +29,9 @@ export default function Home() {
         </div>
         <Suspense>
           <SessionContent />
+        </Suspense>
+        <Suspense>
+          <SupabaseTest />
         </Suspense>
       </main>
     </div>
