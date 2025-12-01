@@ -3,10 +3,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from './db/schema';
 import { auth } from './auth';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
 export const db = drizzle(process.env.DATABASE_URL!, { schema: { ...schema }, logger: true });
-await migrate(db, { migrationsFolder: './drizzle' });
+
 type Session = Awaited<ReturnType<typeof auth.api.getSession>>;
 
 export function createRlsDrizzle({ session }: { session: Session }) {
