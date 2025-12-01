@@ -11,19 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
-      - name: Install dependencies
-        run: pnpm install
-
       - name: Stop Current Preview App
         env:
           DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
@@ -35,20 +22,16 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"applicationId\": \"$APP_ID\"}"
 
-      - name: Clean Database
+      - name: Rebuild Postgres Database
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+          DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
+          POSTGRES_ID: 9bPIEfAz98Cr1s1sMpQpC
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
-          psql "$DATABASE_URL" -c 'DROP SCHEMA IF EXISTS drizzle CASCADE;'
-          psql "$DATABASE_URL" -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'
-          psql "$DATABASE_URL" -c 'DROP ROLE IF EXISTS "anon"; DROP ROLE IF EXISTS "authenticated";'
-
-      - name: Run Migrations
-        run: pnpm db:migrate
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          curl -X POST "$DOKPLOY_URL/api/postgres.rebuild" \
+            -H "x-api-key: $DOKPLOY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"postgresId\": \"$POSTGRES_ID\"}"
 
       - name: Update Dokploy App Branch
         env:
