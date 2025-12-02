@@ -15,23 +15,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  db-init:
-    image: postgres:latest
-    environment:
-      PGPASSWORD: password
-    volumes:
-      - ./init-db.sql:/init-db.sql
-    command: >
-      sh -c "
-        until pg_isready -h db -U postgres; do
-          echo 'Waiting for database to be ready...'
-          sleep 2
-        done
-        psql -h db -U postgres -f /init-db.sql
-      "
-    depends_on:
-      db:
-        condition: service_healthy
   postgREST:
     image: postgrest/postgrest:latest
     environment:
@@ -44,26 +27,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      db-init:
-        condition: service_completed_successfully
-  postgrest-monitor:
-    build:
-      context: ./
-      dockerfile: Dockerfile.monitor
-    environment:
-      DB_HOST: db
-      DB_PORT: "5432"
-      DB_NAME: postgres
-      DB_USER: postgres
-      DB_PASSWORD: password
-      POSTGREST_CONTAINER_NAME: ${COMPOSE_PROJECT_NAME:-dev}-postgREST-1
-      POLL_INTERVAL: "5"
-    depends_on:
-      - db
-      - postgREST
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
 
 volumes:
   db:
